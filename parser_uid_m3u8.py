@@ -158,7 +158,7 @@ class PerUidCachedM3u8Dict(object):
 
             #extract audio from ts
             #command = 'ffmpeg -i ' + media_filename + ' -acodec copy -y ' + target_filename
-            command = 'ffmpeg -i ' + media_filename + '-af aresample=48000:async=1 -c:a aac -y ' + target_filename
+            command = 'ffmpeg -i ' + media_filename + ' -af aresample=48000:async=1 -c:a aac -y ' + target_filename
             command += " 2>&1 | tee -a convert.log"
             print(command)
             subprocess.Popen(command, shell=True, env=None).wait()
