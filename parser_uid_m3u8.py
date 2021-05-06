@@ -58,7 +58,8 @@ class PerUidCachedM3u8Dict(object):
 
                             start_time_tuple = (utc, helper.utc_convert(utc))
                     #move to next utc_timestamp
-                    next_timestamp = helper.utc_convert(utc) + float(duration)
+                    #next_timestamp = helper.utc_convert(utc) + float(duration)
+                    next_timestamp = max(next_timestamp, helper.utc_convert(utc) + float(duration))
 
                 #store everything
                 temp_segment[item[0]] = item[1]
