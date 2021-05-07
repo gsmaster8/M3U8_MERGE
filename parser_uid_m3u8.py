@@ -262,7 +262,8 @@ class ParserUidM3U8File(object):
                     
                     #filestart - segment_start is timestamp offset for each file
                     # start_time：切片开始时间相对segment的偏移时间
-                    start_time = helper.utc_convert(file_utc) - helper.utc_convert(utc)
+                    #start_time = helper.utc_convert(file_utc) - helper.utc_convert(utc)
+                    start_time = helper.utc_convert(file_utc)
                     # close_time：切片结束时间相对segment的偏移时间
                     close_time = start_time + float(utc_tuple_line[1]['fileinfos']["duration"])
 
