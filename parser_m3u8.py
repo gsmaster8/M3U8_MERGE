@@ -17,13 +17,13 @@ class M3u8File(object):
         self.middle_file = "media_file.mf"
 
         # media file format   group(1) = utc  group(2) = ts / WebM
-        self.audio_file_name_pat = r'.*__UserId_s_%s__UserId_e__main_audio_(\d+)\.([a-zA-Z0-9]+)' %(uid)
+        self.audio_file_name_pat = r'.*__UserId_s_%s__UserId_e_main_audio_(\d+)\.([a-zA-Z0-9]+)' %(uid)
         self.regex_audio_file_name_pat = re.compile(self.audio_file_name_pat)
 
-        self.video_main_file_name_pat = r'.*__UserId_s_%s__UserId_e__main_video_(\d+)\.([a-zA-Z0-9]+)' %(uid)
+        self.video_main_file_name_pat = r'.*__UserId_s_%s__UserId_e_main_video_(\d+)\.([a-zA-Z0-9]+)' %(uid)
         self.regex_video_main_file_name_pat = re.compile(self.video_main_file_name_pat)
 
-        self.video_aux_file_name_pat = r'.*__UserId_s_%s__UserId_e__aux_video_(\d+)\.([a-zA-Z0-9]+)' %(uid)
+        self.video_aux_file_name_pat = r'.*__UserId_s_%s__UserId_e_aux_video_(\d+)\.([a-zA-Z0-9]+)' %(uid)
         self.regex_video_aux_file_name_pat = re.compile(self.video_aux_file_name_pat)
 
         ## common part

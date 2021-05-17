@@ -188,9 +188,9 @@ class ParserUidM3U8File(object):
             group(3)=<MediaId>
             group(4)=<Type>
             '''
-            self.filepattern = r'(.*)__UserId_s_([a-zA-Z0-9]+)__UserId_e__([a-zA-Z]+)_([a-zA-Z]+).m3u8'
+            self.filepattern = r'(.*)__UserId_s_([a-zA-Z0-9]+)__UserId_e_([a-zA-Z]+)_([a-zA-Z]+).m3u8'
             # ´øºó×ºµÄm3u8
-            self.filewithindexpatten = r'(.*)__UserId_s_([a-zA-Z0-9]+)__UserId_e__([a-zA-Z]+)_([a-zA-Z]+)_([0-9]+).m3u8'
+            self.filewithindexpatten = r'(.*)__UserId_s_([a-zA-Z0-9]+)__UserId_e_([a-zA-Z]+)_([a-zA-Z]+)_([0-9]+).m3u8'
 
             self.uid = uid
 
