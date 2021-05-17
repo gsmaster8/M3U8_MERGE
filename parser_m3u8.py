@@ -190,6 +190,8 @@ class M3u8File(object):
         video_aux_result = self.regex_video_aux_file_name_pat.match(lineinfo)
 
         if audio_result:
+            if not os.path.isfile(audio_result.group(0)):
+                return True
             utc = audio_result.group(1)
             event_dict['fileinfos']['name'] = audio_result.group(0)
             event_dict['fileinfos']['suffix'] = audio_result.group(2)
@@ -199,6 +201,8 @@ class M3u8File(object):
             return True
 
         elif video_main_result:
+            if not os.path.isfile(video_main_result.group(0)):
+                return True
             utc = video_main_result.group(1)
             event_dict['fileinfos']['name'] = video_main_result.group(0)
             event_dict['fileinfos']['suffix'] = video_main_result.group(2)
@@ -208,6 +212,8 @@ class M3u8File(object):
             return True
 
         elif video_aux_result:
+            if not os.path.isfile(video_aux_result.group(0)):
+                return True
             utc = video_aux_result.group(1)
             event_dict['fileinfos']['name'] = video_aux_result.group(0)
             event_dict['fileinfos']['suffix'] = video_aux_result.group(2)
