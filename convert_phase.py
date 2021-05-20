@@ -208,7 +208,7 @@ class UserAvClip:
                 if os.path.getsize(items[1]) == 0:
                     continue
                 # audio file
-                if items[1][-3:] == "aac":
+                if items[1][-3:] == "m4a":
                     index = self.audio_clip.put_file(items[1])
                     if items[2] == "create":
                         self.audio_clip.start_time[index] = float(items[0])
@@ -311,7 +311,7 @@ def UidFileConvert(folder_name, uid_file, suffix, option, offset_time):
                 if os.path.getsize(items[1]) == 0:
                     continue
                 #audio file
-                if items[1][-3:] == "aac":
+                if items[1][-3:] == "m4a":
                     index = audio_clip.put_file(items[1])
                     if items[2] == "create":
                         audio_clip.start_time[index] = float(items[0])

@@ -27,7 +27,8 @@ class M3u8File(object):
         self.regex_video_aux_file_name_pat = re.compile(self.video_aux_file_name_pat)
 
         ## common part
-        self.track_file_duration_pat = r'#EXTINF:(\d+\.\d+)'
+        # self.track_file_duration_pat = r'#EXTINF:(\d+\.\d+)'
+        self.track_file_duration_pat = r'#EXTINF:(\d+(?:\.\d+)?)'
         self.regex_track_file_duration_pat = re.compile(self.track_file_duration_pat)
 
         '''
@@ -175,8 +176,13 @@ class M3u8File(object):
             #
             # ¸üÐÂvideo_mediafile_dict
             #
-            self.video_mediafile_dict = {}
-            self.video_mediafile_dict.update(new_video_mediafile_dict)
+            if self.file_type == 'video_main':
+                self.video_main_mediafile_dict = {}
+                self.video_main_mediafile_dict.update(new_video_mediafile_dict)
+            elif self.file_type == 'video_aux':
+                self.video_aux_mediafile_dict = {}
+                self.video_aux_mediafile_dict.update(new_video_mediafile_dict)
+
             temp_file.append(file_name + '\n')
 
         if len(temp_file) > 0:

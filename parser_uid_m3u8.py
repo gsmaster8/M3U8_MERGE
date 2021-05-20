@@ -142,7 +142,7 @@ class PerUidCachedM3u8Dict(object):
             fd.close()
 
     def merged_audio_m3u8_dict(self, audio_mediafile_dict):
-        new_suffix='aac'
+        new_suffix='m4a'
         temp_files = []
         for item in audio_mediafile_dict.items():
             utc = item[0]
@@ -158,8 +158,8 @@ class PerUidCachedM3u8Dict(object):
             utc_item_value['fileinfos']['suffix'] = new_suffix
 
             #extract audio from ts
-            #command = 'ffmpeg -i ' + media_filename + ' -acodec copy -y ' + target_filename
-            command = 'ffmpeg -i ' + media_filename + ' -af aresample=48000:async=1 -c:a aac -y ' + target_filename
+            command = 'ffmpeg -i ' + media_filename + ' -acodec copy -y ' + target_filename
+            # command = 'ffmpeg -i ' + media_filename + ' -af aresample=48000:async=1 -c:a aac -y ' + target_filename
             command += " 2>&1 | tee -a convert.log"
             print(command)
             subprocess.Popen(command, shell=True, env=None).wait()
