@@ -41,13 +41,14 @@ class ParserUidM3U8File(object):
             previous = -1
             aux_key_list = SortedList(self.media_dict['aux_video'])
             aux_merged = {}
-            for key in self.media_dict['main_video'].keys():
+            for key,value in self.media_dict['main_video'].items():
                 if previous > 0 and key - previous > self.segment_limit_gap:
                     aux_range = aux_key_list.irange(previous, key-1)
                     for i in aux_range:
-                        if i + self.media_dict['aux_video']['duration'] < key:
-                            aux_merged[i] = self.media_dict['aux_video']
-                previous = key + self.media_dict['main_video']['duration']
+                        aux_value = self.media_dict['aux_video'][i]
+                        if i + aux_value['duration'] < key:
+                            aux_merged[i] = aux_value
+                previous = key + value['duration']
             self.media_dict['main_video'].update(aux_merged)
 
         video_key_list = SortedList(self.media_dict['main_video'])
