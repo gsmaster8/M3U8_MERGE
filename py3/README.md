@@ -11,7 +11,7 @@
 
 ### python3 依赖包
 -	sortedcontainers
--	pip install sortedcontainers
+-	pip3 install sortedcontainers
 
 ##  云端录制工具使用方法
     
