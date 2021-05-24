@@ -41,7 +41,7 @@ if '__main__' == __name__:
         os.environ['USEAUX'] = "%d" % options.aux_use
         parser_folder_m3u8.cmds_parse(["dispose", options.folder])
         convert_phase.do_work()
-        # parser_folder_m3u8.cmds_parse(["clean", options.folder])
+        parser_folder_m3u8.cmds_parse(["clean", options.folder])
     except Exception as e:
         traceback.print_exc()
 
