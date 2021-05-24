@@ -205,7 +205,7 @@ class UserAvClip:
             for line in lines:
                 line = line.strip('\n')
                 items = line.split(" ")
-                if os.path.getsize(items[1]) == 0:
+                if os.path.getsize(items[2]) == 0:
                     continue
                 if items[0] == "audio":
                     index = self.audio_clip.put_file(items[2])
@@ -384,24 +384,18 @@ def SessionConvert(folder_name, opt, saving):
         end_ts = start_ts
         #detectedOncePerTxt = False 
         key = uid
-        if not dict_uid.has_key(key):
+        if key not in dict_uid:
             dict_uid[key] = UserAv(key)
         with open(uid_file) as f:
             lines = f.readlines()
-        
             for line in lines:
                 items = line.split(" ")
-                if os.path.getsize(items[1]) == 0:
+                if os.path.getsize(items[2]) == 0:
                     continue
 
                 if start_ts < 0:
-                    if float(items[0]) > 0:
-                        start_ts = float(items[0])
-                    else:
-                        start_ts = 0
-                items[0] = "%.3f" % (float(items[0])) 
-
-                end_ts = float(items[0])
+                    start_ts = float(items[1])
+                end_ts = float(items[1])
                 
         clip = UserAvClip(folder_name, start_ts, end_ts, uid_file, opt)
         clip.parse() # segmentºÏ²¢
