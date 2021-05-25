@@ -65,6 +65,12 @@ class ParserUidM3U8File(object):
             itemv = self.media_dict['main_video'][v]
             av_ordered_list.append(['video', v, v+itemv['duration'], itemv['name']])
 
+        while ia < len(audio_key_list):
+            a = audio_key_list[ia]
+            itema = self.media_dict['main_audio'][a]
+            av_ordered_list.append(['audio', a, a+itema['duration'], itema['name']])
+            ia += 1
+
         previous = -0.1
         segment = []
         for av in av_ordered_list:
