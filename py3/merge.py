@@ -36,11 +36,12 @@ if '__main__' == __name__:
         parser.print_help()
         parser.error("Not set folder")
 
+    options.folder = os.path.abspath(options.folder)
     try:
         os.environ['FPSARG'] = "%s" % options.fps
         os.environ['USEAUX'] = "%d" % options.aux_use
         parser_folder_m3u8.cmds_parse(["dispose", options.folder])
-        convert_phase.do_work()
+        convert_phase.do_work(options)
         parser_folder_m3u8.cmds_parse(["clean", options.folder])
     except Exception as e:
         traceback.print_exc()
