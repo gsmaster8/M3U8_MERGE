@@ -67,15 +67,22 @@ class AudioClip:
         print("Audio Clip %d: %s: start_time=%.3f, end_time=%.3f" % (i, self.filename[i], self.start_time[i], self.end_time[i]))
 
     def print_ffmpeg(self, output_file, offset_time):
-        if self.num >= 1:
-            str = "ffmpeg " + self.print_filename(offset_time)
-            str = str + "-filter_complex \"concat=n=%d:v=0:a=1[audio]\" " % (self.num * 2)
-            str = str + " -map \"[audio]\" -to %f -y %s" % (self.max_length() - offset_time, output_file)
-        elif self.num == 1:
-            str = "ffmpeg -i %s -c:a copy %s" % (self.filename[0], output_file)
-            # 不用填 空白音频，后续合并视频时一起
-        else:
-            str = ""
+        file_name = 'tmp_audio.ts'
+        cmd = "cat "
+        for a in self.filename:
+            cmd += a + " "
+        cmd += ">> " + file_name
+        subprocess.Popen(cmd, shell=True, env=None).wait()
+        str = "ffmpeg -i %s -af aresample=48000:async=1 -c:a aac %s" % (file_name, output_file)
+        # if self.num >= 1:
+            # str = "ffmpeg " + self.print_filename(offset_time)
+            # str = str + "-filter_complex \"concat=n=%d:v=0:a=1[audio]\" " % (self.num * 2)
+            # str = str + " -map \"[audio]\" -to %f -y %s" % (self.max_length() - offset_time, output_file)
+        # elif self.num == 1:
+            # str = "ffmpeg -i %s -c:a copy %s" % (self.filename[0], output_file)
+            # # 不用填 空白音频，后续合并视频时一起
+        # else:
+            # str = ""
         str = str + " 2>&1 | tee -a convert.log"
         print("==============================audio ffmpeg=====================================")
         print(str)
