@@ -14,7 +14,7 @@ def is_duration_zero(self, file_name):
 class ParserUidM3U8File(object):
     def __init__(self, uid):
         self.uid = uid
-        self.segment_limit_gap = 15
+        self.segment_limit_gap = 15.0
         self.aux_use = 0
         if os.environ.get('USEAUX') is not None:
             self.aux_use = int(os.environ['USEAUX'])
@@ -38,17 +38,28 @@ class ParserUidM3U8File(object):
                 
     def merged_dict_splited_to_segment(self):
         if self.aux_use:
-            previous = -1
             aux_key_list = SortedList(self.media_dict['aux_video'])
+            previous = sys.float_info.max
+            last = -1
+            if len(aux_key_list) > 0:
+                previous = aux_key_list[0]
+                last = aux_key_list[-1]
+
             aux_merged = {}
             for key,value in self.media_dict['main_video'].items():
-                if previous > 0 and key - previous > self.segment_limit_gap:
+                if key - previous > self.segment_limit_gap:
                     aux_range = aux_key_list.irange(previous, key-1)
-                    for i in aux_range:
-                        aux_value = self.media_dict['aux_video'][i]
-                        if i + aux_value['duration'] < key:
-                            aux_merged[i] = aux_value
+                    for v in aux_range:
+                        aux_value = self.media_dict['aux_video'][v]
+                        if v + aux_value['duration'] < key:
+                            aux_merged[v] = aux_value
                 previous = key + value['duration']
+
+            if last > previous:
+                aux_range = aux_key_list.irange(previous, last)
+                for v in aux_range:
+                    aux_value = self.media_dict['aux_video'][v]
+                    aux_merged[v] = aux_value
             self.media_dict['main_video'].update(aux_merged)
 
         video_key_list = SortedList(self.media_dict['main_video'])
