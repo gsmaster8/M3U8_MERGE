@@ -66,14 +66,13 @@ class AudioClip:
     def print_audio_info(self, i):
         print("Audio Clip %d: %s: start_time=%.3f, end_time=%.3f" % (i, self.filename[i], self.start_time[i], self.end_time[i]))
 
-    def print_ffmpeg(self, output_file, offset_time):
-        file_name = 'tmp_audio.ts'
+    def print_ffmpeg(self, output_file, tmp_audio_file, offset_time):
         cmd = "cat "
         for a in self.filename:
             cmd += a + " "
-        cmd += ">> " + file_name
+        cmd += ">> " + tmp_audio_file
         subprocess.Popen(cmd, shell=True, env=None).wait()
-        str = "ffmpeg -i %s -af aresample=48000:async=1 -c:a aac %s" % (file_name, output_file)
+        str = "ffmpeg -i %s -af aresample=48000:async=1 -c:a aac %s" % (tmp_audio_file, output_file)
         # if self.num >= 1:
             # str = "ffmpeg " + self.print_filename(offset_time)
             # str = str + "-filter_complex \"concat=n=%d:v=0:a=1[audio]\" " % (self.num * 2)
@@ -241,9 +240,11 @@ class UserAvClip:
 
         if self.audio_clip.num >= 1:
             print("Generate Audio File")
-            tmp_audio = self.folder_name.strip() + '/' + self.uid + "_tmp.m4a"
+            tmp_file_prefix = self.folder_name.strip() + '/' + self.uid + "_tmp"
+            tmp_audio = tmp_file_prefix + ".m4a"
+            middle_audio_file = tmp_file_prefix + '.ts'
             ffmpeg_args_file = self.folder_name.strip() + '/' + self.uid + '_ffmpeg_args.sh'
-            command = self.audio_clip.print_ffmpeg(tmp_audio, offset_time)
+            command = self.audio_clip.print_ffmpeg(tmp_audio, middle_audio_file, offset_time)
             self.clip.audio_file = tmp_audio
             self.clip.audio_start_time = offset_time
             self.clip.audio_end_time = self.audio_clip.max_length()
@@ -256,6 +257,7 @@ class UserAvClip:
             command = "chmod a+x %s" % ffmpeg_args_file
             subprocess.Popen(command, shell=True, env=child_env).wait()
             subprocess.Popen(ffmpeg_args_file, shell=True, env=child_env).wait()
+            os.system('rm -f %s' % middle_audio_file)
 
         if self.clip.num > 0:
             print("Generate MP4 file:")
@@ -327,9 +329,11 @@ def UidFileConvert(folder_name, uid_file, suffix, option, offset_time):
                     
         if audio_clip.num >= 1:
                 print("Generate Audio File")
-                tmp_audio = folder_name.strip() + '/' + uid+"_tmp.m4a"
+                tmp_file_prefix = folder_name.strip() + '/' + uid + "_tmp"
+                tmp_audio = tmp_file_prefix + ".m4a"
+                middle_audio_file = tmp_file_prefix + '.ts'
                 ffmpeg_args_file = folder_name.strip() + '/' + uid + '_ffmpeg_args.sh'
-                command = audio_clip.print_ffmpeg(tmp_audio, offset_time)
+                command = audio_clip.print_ffmpeg(tmp_audio, middle_audio_file, offset_time)
                 clip.audio_file = tmp_audio #记录合并后的音频文件名
                 clip.audio_start_time = offset_time # 因为会填充静音包，所以肯定为0
                 clip.audio_end_time = audio_clip.max_length() # 这里合并音频时不会在尾部填补静音包
@@ -342,6 +346,7 @@ def UidFileConvert(folder_name, uid_file, suffix, option, offset_time):
                 command = "chmod a+x %s" % ffmpeg_args_file
                 subprocess.Popen(command, shell=True, env=child_env).wait()
                 subprocess.Popen(ffmpeg_args_file, shell=True, env=child_env).wait()
+                os.system('rm -f %s' % middle_audio_file)
     
         if clip.num > 0:
                 print("Generate MP4 file:")
