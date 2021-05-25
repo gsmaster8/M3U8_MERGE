@@ -24,7 +24,7 @@ if '__main__' == __name__:
     parser.add_option("-p", "--fps", type="int", dest="fps", help="Convert fps, default 15", default=15)
     parser.add_option("-s", "--saving", action="store_true", dest="saving", help="Convert Do not time sync",
                       default=False)
-    parser.add_option("-a", "--aux_use", action="store_true", dest="aux_use", help="If main stream not exited, use aux stream",
+    parser.add_option("-a", "--aux_use", type="int", dest="aux_use", help="aux stream mode",
                       default=False)
     parser.add_option("-r", "--resolution", type="int", dest="resolution", nargs=2,
                       help="Specific resolution to convert '-r width height' \nEg:'-r 640 360', default 640x360", default=(0, 0))

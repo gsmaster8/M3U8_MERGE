@@ -15,6 +15,10 @@ class ParserUidM3U8File(object):
     def __init__(self, uid):
         self.uid = uid
         self.segment_limit_gap = 15.0
+
+        # 0 disable aux stream
+        # 1 repalce mode, if main stream not exist, use aux stream
+        # 2 disable main stream
         self.aux_use = 0
         if os.environ.get('USEAUX') is not None:
             self.aux_use = int(os.environ['USEAUX'])
@@ -37,7 +41,9 @@ class ParserUidM3U8File(object):
                 self.media_dict[key].update(m3u8.get_media_dict())
                 
     def merged_dict_splited_to_segment(self):
-        if self.aux_use:
+        if self.aux_use > 0:
+            if self.aux_use == 2:
+                self.media_dict['main_video'].clear()
             aux_key_list = SortedList(self.media_dict['aux_video'])
             previous = sys.float_info.max
             last = -1
