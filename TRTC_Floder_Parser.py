@@ -8,13 +8,6 @@ class TRTCFloderParser(object):
     def __init__(self, folder_name):
         self.path = folder_name
         self.meta_file_patten = r'(.*)__UserId_s_(.*)__UserId_e_([a-zA-Z]+)_([a-zA-Z]+)((_[0-9]+)?).m3u8'
-
-        '''
-        self.all_uid_metadatafiles = {
-        'uid1':TRTCUidParser(format)
-        'uid2':TRTCUidParser(format)
-        }
-        '''
         self.all_uid_metadatafiles = {}
         
     def parser_all_files(self):
@@ -35,21 +28,18 @@ class TRTCFloderParser(object):
 
             self.all_uid_metadatafiles[uid].update_filename_dict(stream_type, file)
 
-    def per_user_splited_metadata_dict_merged_in_one(self):
-        for metadatafile_per_uid in self.all_uid_metadatafiles.values():
-            metadatafile_per_uid.metadata_dict_merged_in_merged_dict()
+    def parser_per_uid_files(self):
+        for uid_files in self.all_uid_metadatafiles.values():
+            uid_files.metadata_dict_merged_in_merged_dict()
 
-    def per_user_merged_dict_splited_to_segment(self):
-        for metadatafile_per_uid in self.all_uid_metadatafiles.values():
-            metadatafile_per_uid.merged_dict_splited_to_segment()
+    def parser_files_splited_to_segment(self):
+        for uid_files in self.all_uid_metadatafiles.values():
+            uid_files.merged_dict_splited_to_segment()
     
-    def dispose(self):
-        #stored in dict
+    def process(self):
         self.parser_all_files()
-        #stored all corner case as one merged file
-        self.per_user_splited_metadata_dict_merged_in_one()
-        #split one merged file as segment per start key word
-        self.per_user_merged_dict_splited_to_segment()
+        self.parser_per_uid_files()
+        self.parser_files_splited_to_segment()
  
     def clean(self):
         if not os.path.isdir(self.path):

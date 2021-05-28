@@ -30,7 +30,7 @@ if '__main__' == __name__:
         os.environ['MERGEMODE'] = "%d" % options.mode
         os.environ['MERGEGAP'] = "%d" % options.saving
         Parser = TRTC_Floder_Parser.TRTCFloderParser(options.folder)
-        Parser.dispose()
+        Parser.process()
         TRTC_Convert.start_convert(options)
         Parser.clean()
     except Exception as e:
