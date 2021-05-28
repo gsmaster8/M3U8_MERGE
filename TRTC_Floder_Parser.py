@@ -7,7 +7,7 @@ from TRTC_Uid_Parser import TRTCUidParser
 class TRTCFloderParser(object):
     def __init__(self, folder_name):
         self.path = folder_name
-        self.meta_file_patten = r'(.*)__UserId_s_(.*)__UserId_e__([a-zA-Z]+)_([a-zA-Z]+).m3u8'
+        self.meta_file_patten = r'(.*)__UserId_s_(.*)__UserId_e_([a-zA-Z]+)_([a-zA-Z]+).m3u8'
 
         '''
         self.all_uid_metadatafiles = {

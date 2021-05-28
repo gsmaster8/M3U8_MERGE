@@ -10,7 +10,7 @@ class TRTCM3u8File(object):
         self.stream_type = stream_type
         self.middle_file = "media_file.mf"
 
-        self.media_pat = r'.*__UserId_s_%s__UserId_e__%s_(\d+)\.([a-zA-Z0-9]+)' % (self.uid, self.stream_type)
+        self.media_pat = r'.*__UserId_s_%s__UserId_e_%s_(\d+)\.([a-zA-Z0-9]+)' % (self.uid, self.stream_type)
         self.duration_pat = r'#EXTINF:(\d+(?:\.\d+)?)'
 
         self.media_dict = SortedDict()
@@ -31,7 +31,7 @@ class TRTCM3u8File(object):
                 elif extinf > 0:
                     result = regex_media_pat.match(line)
                     if result:
-                        if os.path.isfile(result.group(0)):
+                        if os.path.isfile(result.group(0)) and os.path.getsize(result.group(0)) > 0:
                             media = {}
                             media["name"] = result.group(0)
                             media["duration"] = extinf
