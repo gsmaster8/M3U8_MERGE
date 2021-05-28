@@ -8,7 +8,7 @@ class TRTCFloderParser(object):
     def __init__(self, folder_name):
         self.path = folder_name
         self.meta_file_patten = r'(.*)__UserId_s_(.*)__UserId_e_([a-zA-Z]+)_([a-zA-Z]+).m3u8'
-
+        self.meta_file_with_index_patten = r'(.*)__UserId_s_(.*)__UserId_e_([a-zA-Z]+)_([a-zA-Z]+)_([0-9]+).m3u8'
         '''
         self.all_uid_metadatafiles = {
         'uid1':TRTCUidParser(format)
@@ -21,9 +21,11 @@ class TRTCFloderParser(object):
         os.chdir(self.path)
         all_files = sorted(glob.glob('*.m3u8'))
         filename_pat_reged = re.compile(self.meta_file_patten)
-
+        filename_with_index_pat_reged = re.compile(self.meta_file_with_index_patten)
         for file in all_files:
             result = filename_pat_reged.match(file)
+            if not result:
+                result = filename_with_index_pat_reged.match(file)
             if not result:
                 continue
             prefix = result.group(1)
