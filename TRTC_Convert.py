@@ -6,8 +6,8 @@ HOME = os.path.dirname(os.path.realpath(__file__))
 pathEnv=os.getenv('PATH')
 os.environ['PATH']= "%s" %(HOME) + ":" + pathEnv 
 dest_fps = 15
-target_width = 640
-target_height = 360
+target_width = 0
+target_height = 0
 black_frame_mode = False
 
 class TRTCAudioClip:
@@ -66,6 +66,8 @@ class TRTCVideoClip:
         self.filename = []
         self.start_time = []
         self.end_time = []
+        self.width = []
+        self.height = []
         self.audio_file = ""
         self.audio_start_time = 0.0
         self.audio_end_time = 0.0
@@ -84,8 +86,16 @@ class TRTCVideoClip:
             self.filename.append(name)
             self.start_time.append(0.0)
             self.end_time.append(0.0)
+            self.width.append(0)
+            self.height.append(0)
             self.num = self.num + 1
         return self.filename.index(name)
+
+    def get_max_width(self):
+        return max(self.width)
+
+    def get_max_height(self):
+        return max(self.height) 
     
     def max_length(self):
         if self.num > 0:
@@ -164,7 +174,9 @@ class TRTCVideoClip:
     def print_video_info(self, i):
         print("Video Clip %d: %s: start_time=%.3f, end_time=%.3f, width=%d, height=%d" % (i, self.filename[i], self.start_time[i], self.end_time[i], target_width, target_height))
     
-def convert_per_uid(folder_name, uid_file, suffix, offset_time):    
+def convert_per_uid(folder_name, uid_file, suffix, offset_time):
+        global target_height
+        global target_width  
         print("Offset_time : " + str(offset_time))
         child_env = os.environ.copy()
 
@@ -190,6 +202,8 @@ def convert_per_uid(folder_name, uid_file, suffix, offset_time):
                     index = clip.put_file(items[2])
                     if items[3] == "create":
                         clip.start_time[index] = float(items[1])
+                        clip.width[index] = items[4]
+                        clip.height[index] = items[5]
                     elif items[3] == "close":
                         clip.end_time[index] = float(items[1])
 
@@ -225,6 +239,10 @@ def convert_per_uid(folder_name, uid_file, suffix, offset_time):
         if clip.num > 0:
             print("Generate MP4 file:")
             output_file = uid + suffix + ".mp4"
+            if target_width == 0:
+                target_width = clip.get_max_width()
+            if target_height == 0:
+                target_height = clip.get_max_height()
             command =  clip.print_ffmpeg(output_file, offset_time)
         else:
             tmp_audio = uid+"_tmp.m4a"
@@ -268,7 +286,7 @@ def start_convert(options):
     if options.fps <= 0:
         parser.error("Invalid fps")
 
-    if options.resolution[0] <= 0 or options.resolution[1] <= 0:
+    if options.resolution[0] < 0 or options.resolution[1] < 0:
         parser.error("Invalid resolution width/height")
     else:
         target_width = options.resolution[0]

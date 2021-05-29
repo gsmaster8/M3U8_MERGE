@@ -85,7 +85,7 @@ class TRTCUidParser(object):
                 av_ordered_list.append(['audio', a, a+itema['duration'], itema['name']])
                 ia += 1
             itemv = self.media_dict['main_video'][v]
-            av_ordered_list.append(['video', v, v+itemv['duration'], itemv['name']])
+            av_ordered_list.append(['video', v, v+itemv['duration'], itemv['name'], itemv['width'], itemv['height']])
 
         while ia < len(audio_key_list):
             a = audio_key_list[ia]
@@ -121,14 +121,17 @@ class TRTCUidParser(object):
             segments.append(final_segment)
 
         for s in segments:
-            self.create_middlefile_of_segments(segment)
+            self.create_middlefile_of_segments(s)
 
     def create_middlefile_of_segments(self, segment):
         utc = str(segment[0][1])
         segment_filename = 'uid_' + self.uid + "_" + utc + ".txt"
         lines = []
         for av in segment:
-            create = '%s %.3f %s create' % (av[0], av[1], av[3])
+            if len(av) < 5:
+                create = '%s %.3f %s create' % (av[0], av[1], av[3])
+            else:
+                create = '%s %.3f %s create %d %d' % (av[0], av[1], av[3], av[4], av[5])
             close = '%s %.3f %s close' % (av[0], av[2], av[3])
             lines.append(create)
             lines.append(close)

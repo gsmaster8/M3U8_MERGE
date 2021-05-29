@@ -15,7 +15,7 @@ if '__main__' == __name__:
     parser.add_option("-p", "--fps", type="int", dest="fps", help="Convert fps, default 15", default=15)
     parser.add_option("-s", "--saving", action="store_true", dest="saving", help="Convert Do not time sync", default=False)
     parser.add_option("-a", "--aux_use", type="int", dest="aux_use", help="aux stream mode", default=False)
-    parser.add_option("-r", "--resolution", type="int", dest="resolution", nargs=2, help="Specific resolution to convert '-r width height' \nEg:'-r 640 360', default 640x360", default=(640, 360))
+    parser.add_option("-r", "--resolution", type="int", dest="resolution", nargs=2, help="Specific resolution to convert '-r width height' \nEg:'-r 640 360'", default=(0, 0))
     parser.add_option("-b", "--fill_black", action="store_true", dest="fill_black", help="Show black frame when there is no video file", default=False)
 
     (options, args) = parser.parse_args()
