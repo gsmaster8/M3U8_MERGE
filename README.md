@@ -37,7 +37,14 @@
 > 首先介绍一下视频段（Segment）的概念：如果两个切片之间的时间间隔超过15秒，间隔时间内没有任何音频/视频信息（如果没有开启辅流模式，会忽略辅流信息），我们把这两个切片看作两个不同的Segment。其中，录制时间较早的切片看作前一个Segment的结束切片，录制时间较晚的切片看作后一个Segment的开始切片。
 
  - 分段模式（-m 0）
-此模式下，脚本将每个uid下的录制文件按Segment合并。一个uid下的Segment被独立合并为一个文件，文件名为 uid_timestamp_av.mp4。其中，uid为用户唯一编号，timestamp为Segment开始录制的时间。
+此模式下，脚本将每个uid下的录制文件按Segment合并。一个uid下的Segment被独立合并为一个文件。
             
 -   合并模式（-m 1）
 把同一个uid下的所有Segment段合并为一个音视频文件。可利用 -s 选项选择是否填充各个Segment之间的间隔。
+
+### 输出文件命名规则
+音视频文件：uid_timestamp_av.mp4
+
+纯音频文件：uid_timestamp.m4a
+
+其中，uid表示用户唯一标识；timestamp表示音视频开始录制的时间。
