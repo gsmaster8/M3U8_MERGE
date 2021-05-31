@@ -124,7 +124,8 @@ class TRTCUidParser(object):
             self.create_middlefile_of_segments(s)
 
     def create_middlefile_of_segments(self, segment):
-        utc = str(segment[0][1])
+        #utc = str(segment[0][1])
+        utc = segment[0][3][-20:-3]
         segment_filename = 'uid_' + self.uid + "_" + utc + ".txt"
         lines = []
         for av in segment:

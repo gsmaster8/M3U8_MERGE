@@ -1,6 +1,7 @@
 import os
 import glob
 import subprocess
+import TRTC_Helper
 
 HOME = os.path.dirname(os.path.realpath(__file__))
 pathEnv=os.getenv('PATH')
@@ -269,7 +270,8 @@ def convert_middlefile(folder_name):
     os.chdir(folder_name)
     all_uid_file = sorted(glob.glob("uid_*.txt"))
     for uid_file in all_uid_file:
-        offset_time = float(uid_file.split("_")[2][0:-4])
+        # offset_time = float(uid_file.split("_")[2][0:-4])
+        offset_time = float(TRTC_Helper.utc_convert(uid_file.split("_")[2][0:-4]))
         convert_per_uid(folder_name, uid_file, "_av", offset_time)
 
 def start_convert(options):
