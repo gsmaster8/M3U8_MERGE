@@ -202,8 +202,8 @@ def convert_per_uid(folder_name, uid_file, suffix, offset_time):
                     index = clip.put_file(items[2])
                     if items[3] == "create":
                         clip.start_time[index] = float(items[1])
-                        clip.width[index] = items[4]
-                        clip.height[index] = items[5]
+                        clip.width[index] = int(items[4])
+                        clip.height[index] = int(items[5])
                     elif items[3] == "close":
                         clip.end_time[index] = float(items[1])
 
