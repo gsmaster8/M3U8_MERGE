@@ -271,7 +271,7 @@ def convert_middlefile(folder_name):
     all_uid_file = sorted(glob.glob("uid_*.txt"))
     for uid_file in all_uid_file:
         # offset_time = float(uid_file.split("_")[2][0:-4])
-        offset_time = float(TRTC_Helper.utc_convert(uid_file.split("_")[2][0:-4]))
+        offset_time = float(TRTC_Helper.utc_convert(uid_file.split("_")[-1][0:-4]))
         convert_per_uid(folder_name, uid_file, "_av", offset_time)
 
 def start_convert(options):
