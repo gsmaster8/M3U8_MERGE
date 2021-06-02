@@ -1,5 +1,6 @@
 import os
 import sys
+import copy
 from TRTC_M3u8_Parser import TRTCM3u8File
 from sortedcontainers import SortedDict,SortedList
 
@@ -76,7 +77,6 @@ class TRTCUidParser(object):
         video_key_list = SortedList(self.media_dict['main_video'])
         audio_key_list = SortedList(self.media_dict['main_audio'])
         av_ordered_list = []
-
         ia = 0
         for v in video_key_list:
             while ia < len(audio_key_list) and audio_key_list[ia] <= v:
@@ -92,19 +92,17 @@ class TRTCUidParser(object):
             itema = self.media_dict['main_audio'][a]
             av_ordered_list.append(['audio', a, a+itema['duration'], itema['name']])
             ia += 1
-
         previous = -0.1
         segments = []
         segment = []
         for av in av_ordered_list:
             if previous > 0 and av[1] - previous > self.segment_limit_gap:
-                segments.append(segment)
+                segments.append(copy.deepcopy(segment))
                 segment.clear()
             segment.append(av)
-            previous = av[1] + av[2]
+            previous = av[2]
         if segment:
-            segments.append(segment)
-
+            segments.append(copy.deepcopy(segment))
         if self.merge_segments:
             final_segment = []
             for i in range(len(segments)):
@@ -119,7 +117,6 @@ class TRTCUidParser(object):
                     final_segment.append(v)
             segments.clear()
             segments.append(final_segment)
-
         for s in segments:
             self.create_middlefile_of_segments(s)
 

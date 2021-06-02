@@ -55,7 +55,7 @@ class TRTCAudioClip:
             cmd += a + " "
         cmd += ">> " + tmp_audio_file
         subprocess.Popen(cmd, shell=True, env=None).wait()
-        str = "ffmpeg -i %s -af aresample=48000:async=1 -c:a aac %s" % (tmp_audio_file, output_file)
+        str = "ffmpeg -copyts -i %s -af aresample=48000:async=1 -c:a aac %s" % (tmp_audio_file, output_file)
         str = str + " 2>&1 | tee -a convert.log"
         print("==============================audio ffmpeg=====================================")
         print(str)
@@ -224,7 +224,7 @@ def convert_per_uid(folder_name, uid_file, suffix, offset_time):
             ffmpeg_args_file = folder_name.strip() + '/' + uid + '_ffmpeg_args.sh'
             command = audio_clip.print_ffmpeg(tmp_audio, middle_audio_file, offset_time)
             clip.audio_file = tmp_audio
-            clip.audio_start_time = offset_time
+            clip.audio_start_time = audio_clip.start_time[0]
             clip.audio_end_time = audio_clip.max_length()
             print(command)
             
